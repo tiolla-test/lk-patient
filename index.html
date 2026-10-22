@@ -3343,6 +3343,60 @@ h1[data-dc="wiz-top-title"] { margin: 0; }
   /* п. 13: пояснения — 14 */
   .dc-hint, [data-dc="consent"], [data-dc="plan-note"] { font-size: 14px !important; line-height: 20px !important; }
 }
+
+/* ---------- v51: экраны вне мастера на телефоне (аудит 5, пп. 6, 9, 10, 15, 16; 22.10) ---------- */
+@media (max-width: 620px) {
+  /* п. 9: ровный фон, заголовок без описания */
+  main.dc-pagecenter { background: var(--c-surface-3); padding-left: 0 !important; padding-right: 0 !important; }
+  main.dc-pagecenter > [data-dc="page-card"] {
+    padding: 0 16px !important; background: transparent !important; box-shadow: none !important; border: 0 !important;
+    border-radius: 0 !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important;
+  }
+  main.dc-pagecenter .dc-h1 { font-size: 24px !important; line-height: 32px !important; margin-bottom: 16px !important; }
+  main.dc-pagecenter .dc-subtext-mb26 { display: none !important; }
+
+  /* п. 10: каталог — блоки; «Мои исследования» — по меткам в разметке */
+  main.dc-pagecenter [data-dc="study-card"] {
+    margin-left: -16px !important; margin-right: -16px !important; border: 0 !important; border-radius: 0 !important;
+    box-shadow: none !important; background: var(--c-white) !important; padding: 16px !important;
+  }
+  main[data-screen-label="Новые исследования"] div:has(> [data-dc="study-card"]) { gap: 8px !important; }
+
+  /* п. 6: чипы участников в одну строку */
+  main[data-screen-label="Мои исследования"] [data-dc="tabstrip"] {
+    flex-wrap: nowrap !important; overflow-x: auto; scrollbar-width: none; margin-left: -16px; margin-right: -16px; padding: 0 16px;
+  }
+  main[data-screen-label="Мои исследования"] [data-dc="tabstrip"]::-webkit-scrollbar { display: none; }
+  main[data-screen-label="Мои исследования"] [data-dc="tabstrip"] > span:first-child { display: none !important; }
+  main[data-screen-label="Мои исследования"] [data-dc="tabstrip"] > * { flex: 0 0 auto !important; white-space: nowrap !important; }
+
+  /* п. 16: уведомления строками в одном блоке */
+  main[data-screen-label="Уведомления"] div:has(> [data-dc="notif-item"]) {
+    gap: 0 !important; margin-left: -16px; margin-right: -16px; background: var(--c-white);
+  }
+  [data-dc="notif-item"] {
+    border: 0 !important; border-bottom: 1px solid var(--c-divider) !important; border-radius: 0 !important;
+    box-shadow: none !important; background: transparent !important; padding: 16px !important;
+  }
+  [data-dc="notif-item"] > div:first-child { width: 32px !important; height: 32px !important; border-radius: 8px !important; }
+
+  /* п. 15: настройки — список разделов */
+  main[data-screen-label="Настройки"] [data-dc="tabstrip"] { display: none !important; }
+  main[data-dc-setmenu="1"] [data-dc="page-card"] > :not(h1):not([data-dc="set-menu"]):not([data-dc="logout-block"]) { display: none !important; }
+  main[data-dc-setmenu="0"] [data-dc="set-menu"],
+  main[data-dc-setmenu="0"] [data-dc="logout-block"] { display: none !important; }
+  main[data-dc-setmenu="1"] [data-dc="logout-block"] { margin-top: 0 !important; }
+  [data-dc="set-menu"] { padding: 0 16px !important; }
+  [data-dc="set-cell"] {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 56px; cursor: pointer;
+    font: 600 16px/24px 'Manrope', sans-serif; color: var(--c-ink); border-bottom: 1px solid var(--c-divider);
+  }
+  [data-dc="set-cell"]:last-child { border-bottom: 0; }
+  [data-dc="set-back"] {
+    display: flex; align-items: center; gap: 8px; min-height: 44px; margin: 0 0 8px -4px; cursor: pointer;
+    font: 600 16px/24px 'Manrope', sans-serif; color: var(--c-ink);
+  }
+}
 </style>
 </head>
 <body>
@@ -3684,7 +3738,7 @@ input::placeholder,textarea::placeholder{color:var(--c-ink-3)}
         <sc-if value="{{ myHasActive }}" hint-placeholder-val="{{ true }}">
           <div style="display:grid;grid-template-columns:1fr 340px;gap:20px;align-items:stretch">
             <!-- Active application card -->
-            <div style="background:rgba(255,255,255,0.85);border:1px solid var(--c-border-plate);border-radius:16px;box-shadow:0 4px 24px rgba(10, 40, 80,0.08);padding:24px 28px">
+            <div data-dc-m="block" style="background:rgba(255,255,255,0.85);border:1px solid var(--c-border-plate);border-radius:16px;box-shadow:0 4px 24px rgba(10, 40, 80,0.08);padding:24px 28px">
               <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
                 <span style="{{ myBadgeStyle }}">{{ myBadgeText }}</span>
                 <span class="dc-lbl dc-lbl-muted">{{ myActiveNo }} · {{ myActiveMeta }}</span>
@@ -3741,7 +3795,7 @@ input::placeholder,textarea::placeholder{color:var(--c-ink-3)}
 
         <!-- Единая карточка: заголовок исследования один раз наверху + план визитов, текущий визит развёрнут -->
         <sc-if value="{{ showVisitPlan }}" hint-placeholder-val="{{ false }}">
-          <div style="background:rgba(255,255,255,0.85);border:1px solid var(--c-border-plate);border-radius:16px;box-shadow:0 4px 24px rgba(10, 40, 80,0.08);padding:24px 28px">
+          <div data-dc-m="block" style="background:rgba(255,255,255,0.85);border:1px solid var(--c-border-plate);border-radius:16px;box-shadow:0 4px 24px rgba(10, 40, 80,0.08);padding:24px 28px">
             <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap">
               <span style="{{ myBadgeStyle }}">{{ myBadgeText }}</span>
               <span class="dc-lbl dc-lbl-muted">Заявка № 2026-0417 · {{ visitPlanStudyMeta }}</span>
@@ -3768,7 +3822,7 @@ input::placeholder,textarea::placeholder{color:var(--c-ink-3)}
 
                 <!-- Текущий визит: развёрнутая карточка с прогрессом, статусом, данными визита и кнопкой -->
                 <sc-if value="{{ vp.isCurrent }}" hint-placeholder-val="{{ false }}">
-                  <div style="{{ myCurrentTileStyle }}">
+                  <div data-dc-m="sub" style="{{ myCurrentTileStyle }}">
                     <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px">
                       <div style="font:600 14px/20px 'Manrope',sans-serif;color:var(--c-ink)">Визит {{ vp.n }}</div>
                       <span style="{{ vp.badgeText }}">{{ vp.statusLabel }}</span>
@@ -3806,7 +3860,7 @@ input::placeholder,textarea::placeholder{color:var(--c-ink-3)}
                           </div>
                           <!-- Результаты двух видов: по антителам и по генетике -->
                           <sc-for list="{{ vp.results }}" as="rc" hint-placeholder-count="2">
-                            <div style="background:var(--c-white);border:1px solid var(--c-border-plate);border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+                            <div data-dc-m="sub" style="background:var(--c-white);border:1px solid var(--c-border-plate);border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
                               <div style="{{ rc.iconWrapStyle }}">
                                 <sc-if value="{{ rc.isAb }}" hint-placeholder-val="{{ true }}">
                                   <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--c-action)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v14a3 3 0 0 0 6 0V2"></path><path d="M7.5 2h9"></path><path d="M9 11h6"></path></svg>
@@ -3833,7 +3887,7 @@ input::placeholder,textarea::placeholder{color:var(--c-ink-3)}
 
                 <!-- Пройденный или ещё не наступивший визит: плашка, для пройденных — с разворачиванием результатов -->
                 <sc-if value="{{ vp.showSimpleTile }}" hint-placeholder-val="{{ true }}">
-                  <div data-dc="visit-tile" style="{{ vp.cardStyle }}">
+                  <div data-dc="visit-tile" data-dc-m="sub" style="{{ vp.cardStyle }}">
                     <div data-dc="split-row" style="display:flex;align-items:center;justify-content:space-between;gap:12px">
                       <div style="display:flex;align-items:center;gap:16px">
                         <div style="{{ vp.dotStyle }}">{{ vp.mark }}<sc-if value="{{ vp.tick === '18' }}" hint-placeholder-val="{{ false }}"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true" style="flex:none;display:block"><path d="M3.75 9.75l3 3 7.5-7.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if></div>
@@ -3873,7 +3927,7 @@ input::placeholder,textarea::placeholder{color:var(--c-ink-3)}
                           </div>
                           <!-- Результаты двух видов: по антителам и по генетике -->
                           <sc-for list="{{ vp.results }}" as="rc" hint-placeholder-count="2">
-                            <div style="background:var(--c-white);border:1px solid var(--c-border-plate);border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+                            <div data-dc-m="sub" style="background:var(--c-white);border:1px solid var(--c-border-plate);border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
                               <div style="{{ rc.iconWrapStyle }}">
                                 <sc-if value="{{ rc.isAb }}" hint-placeholder-val="{{ true }}">
                                   <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--c-action)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v14a3 3 0 0 0 6 0V2"></path><path d="M7.5 2h9"></path><path d="M9 11h6"></path></svg>
@@ -3909,7 +3963,7 @@ input::placeholder,textarea::placeholder{color:var(--c-ink-3)}
                 </sc-for>
               </div>
               <sc-if value="{{ resultsEmpty }}" hint-placeholder-val="{{ false }}">
-                <div style="background:var(--c-surface-2);border:1px solid var(--c-border-plate);border-radius:12px;padding:32px 24px;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center">
+                <div data-dc-m="sub" style="background:var(--c-surface-2);border:1px solid var(--c-border-plate);border-radius:12px;padding:32px 24px;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center">
                   <div style="font:600 14px/20px 'Manrope',sans-serif;color:var(--c-ink)">Результатов пока нет</div>
                   <div style="font:400 14px/20px 'Manrope',sans-serif;color:var(--c-ink-2);max-width:440px">{{ resultsEmptyText }}</div>
                 </div>
@@ -3918,7 +3972,7 @@ input::placeholder,textarea::placeholder{color:var(--c-ink-3)}
                 <div style="display:flex;flex-direction:column;gap:12px">
                   <!-- Все результаты вместе — одним документом и одним окном -->
                   <sc-if value="{{ showResultsSummary }}" hint-placeholder-val="{{ true }}">
-                    <div style="background:var(--c-surface-2);border:1px solid var(--c-border-plate);border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+                    <div data-dc-m="sub" style="background:var(--c-surface-2);border:1px solid var(--c-border-plate);border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">
                       <div style="flex:1;min-width:200px;display:flex;flex-direction:column;gap:2px">
                         <div style="font:600 14px/20px 'Manrope',sans-serif;color:var(--c-ink)">Все результаты вместе</div>
                         <div style="font:400 14px/20px 'Manrope',sans-serif;color:var(--c-ink-2)">{{ resultsSummaryText }}</div>
@@ -3939,7 +3993,7 @@ input::placeholder,textarea::placeholder{color:var(--c-ink-3)}
                       </div>
                       <div style="display:flex;flex-direction:column;gap:8px">
                         <sc-for list="{{ rv.cards }}" as="rc" hint-placeholder-count="2">
-                          <div style="background:var(--c-white);border:1px solid var(--c-border-plate);border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+                          <div data-dc-m="sub" style="background:var(--c-white);border:1px solid var(--c-border-plate);border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
                             <div style="{{ rc.iconWrapStyle }}">
                               <sc-if value="{{ rc.isAb }}" hint-placeholder-val="{{ true }}">
                                 <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--c-action)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v14a3 3 0 0 0 6 0V2"></path><path d="M7.5 2h9"></path><path d="M9 11h6"></path></svg>
@@ -3976,7 +4030,7 @@ input::placeholder,textarea::placeholder{color:var(--c-ink-3)}
             </sc-if>
             <div style="display:flex;flex-direction:column;gap:12px">
               <sc-for list="{{ sec.apps }}" as="oa" hint-placeholder-count="1">
-                <div style="background:rgba(255,255,255,0.85);border:1px solid var(--c-border-plate);border-radius:12px;box-shadow:0 4px 24px rgba(10, 40, 80,0.08);padding:20px 24px">
+                <div data-dc-m="block" style="background:rgba(255,255,255,0.85);border:1px solid var(--c-border-plate);border-radius:12px;box-shadow:0 4px 24px rgba(10, 40, 80,0.08);padding:20px 24px">
                   <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px;flex-wrap:wrap">
                     <div>
                       <div style="font:700 16px/24px 'Manrope',sans-serif;color:var(--c-ink)">{{ oa.studyTitle }}</div>
@@ -3999,7 +4053,7 @@ input::placeholder,textarea::placeholder{color:var(--c-ink-3)}
         </sc-if>
 
         <sc-if value="{{ myShowDone }}" hint-placeholder-val="{{ false }}">
-          <div style="background:rgba(255,255,255,0.85);border:1px solid var(--c-border-plate);border-radius:16px;box-shadow:0 4px 24px rgba(10, 40, 80,0.08);padding:24px 28px;margin-top:20px">
+          <div data-dc-m="block" style="background:rgba(255,255,255,0.85);border:1px solid var(--c-border-plate);border-radius:16px;box-shadow:0 4px 24px rgba(10, 40, 80,0.08);padding:24px 28px;margin-top:20px">
             <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
               <span style="font:600 12px/16px 'Manrope',sans-serif;color:var(--c-ok-text);background:var(--c-ok-tint);padding:4px 12px;border-radius:99px">Исследование завершено</span>
               <span class="dc-lbl dc-lbl-muted">{{ myFinMeta }}</span>
@@ -4013,7 +4067,7 @@ input::placeholder,textarea::placeholder{color:var(--c-ink-3)}
               </div>
               <!-- Результаты двух видов: по антителам и по генетике -->
               <sc-for list="{{ stepResultCards }}" as="rc" hint-placeholder-count="2">
-                <div style="background:var(--c-surface-2);border:1px solid var(--c-border-plate);border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+                <div data-dc-m="sub" style="background:var(--c-surface-2);border:1px solid var(--c-border-plate);border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
                   <div style="{{ rc.iconWrapStyle }}">
                     <sc-if value="{{ rc.isAb }}" hint-placeholder-val="{{ true }}">
                       <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--c-action)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v14a3 3 0 0 0 6 0V2"></path><path d="M7.5 2h9"></path><path d="M9 11h6"></path></svg>
@@ -4038,7 +4092,7 @@ input::placeholder,textarea::placeholder{color:var(--c-ink-3)}
         </sc-if>
 
         <sc-if value="{{ myEmpty }}" hint-placeholder-val="{{ false }}">
-          <div style="background:rgba(255,255,255,0.85);border:1px solid var(--c-border-plate);border-radius:16px;box-shadow:0 4px 24px rgba(10, 40, 80,0.08);padding:52px 24px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center">
+          <div data-dc-m="block" style="background:rgba(255,255,255,0.85);border:1px solid var(--c-border-plate);border-radius:16px;box-shadow:0 4px 24px rgba(10, 40, 80,0.08);padding:52px 24px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center">
             <div style="font:700 16px/24px 'Manrope',sans-serif;color:var(--c-ink)">{{ myEmptyTitle }}</div>
             <div style="font:400 14px/20px 'Manrope',sans-serif;color:var(--c-ink-2)">{{ myEmptyText }}</div>
             <button onClick="{{ onNavNew }}" style="margin-top:4px;height:40px;padding:0 24px;background:linear-gradient(135deg,var(--c-btn-1) 0%,var(--c-btn-2) 50%,var(--c-btn-3) 100%);color:var(--c-on-btn);border:none;border-radius:var(--radius-full);font:600 14px/20px 'Manrope',sans-serif;cursor:pointer;box-shadow:none" style-hover="background:linear-gradient(135deg,var(--c-btn-hover-1) 0%,var(--c-btn-hover-2) 50%,var(--c-btn-hover-3) 100%);box-shadow:0 1px 2px rgba(10, 40, 80,0.20),0 1px 3px 1px rgba(10, 40, 80,0.10);transform:translateY(-1px)">Смотреть исследования</button>
@@ -4050,7 +4104,7 @@ input::placeholder,textarea::placeholder{color:var(--c-ink-3)}
 
   <!-- ===== Screen: settings ===== -->
   <sc-if value="{{ showSettings }}" hint-placeholder-val="{{ false }}">
-    <main data-screen-label="Настройки" class="dc-pagecenter">
+    <main data-screen-label="Настройки" class="dc-pagecenter" data-dc-setmenu="{{ setMenuAttr }}">
       <div data-dc="page-card" style="width:920px;max-width:100%;background:rgba(255,255,255,0.60);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-radius:var(--radius-28);box-shadow:0 4px 24px rgba(10, 40, 80,0.08);padding:28px 32px 32px">
         <h1 class="dc-h1">Настройки</h1>
         <p class="dc-subtext-mb26">Профили участников, уведомления и управление аккаунтом.</p>
@@ -4061,6 +4115,13 @@ input::placeholder,textarea::placeholder{color:var(--c-ink-3)}
             <div data-dc-hover onClick="{{ stab.onSelect }}" style="{{ stab.tabStyle }}">{{ stab.label }}</div>
           </sc-for>
         </div>
+        <!-- v51: на телефоне — список разделов и строка возврата к нему (аудит 5, п. 15) -->
+        <div class="dc-mob-only" data-dc="set-menu" data-dc-m="block">
+          <sc-for list="{{ settingsTabs }}" as="stab" hint-placeholder-count="3">
+            <div data-dc-hover data-dc="set-cell" onClick="{{ stab.onOpenMob }}"><span>{{ stab.label }}</span><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" style="flex:none;color:var(--c-ink-3)"><path d="M6 3.5L10.5 8 6 12.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+          </sc-for>
+        </div>
+        <div class="dc-mob-only" data-dc="set-back" data-dc-hover onClick="{{ onSetMenu }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>{{ settingsTabLabel }}</span></div>
 
         <!-- ===== Tab: Профили участников ===== -->
         <sc-if value="{{ showSettingsProfiles }}" hint-placeholder-val="{{ true }}">
@@ -4330,7 +4391,7 @@ input::placeholder,textarea::placeholder{color:var(--c-ink-3)}
         </sc-if>
 
         <!-- v50: «Выйти» на телефоне — последней строкой настроек, с подтверждением (аудит 5, п. 8) -->
-        <div class="dc-mob-only" data-dc-m="block">
+        <div class="dc-mob-only" data-dc-m="block" data-dc="logout-block">
           <button type="button" data-dc="logout-row" onClick="{{ onAskLogout }}">Выйти из личного кабинета</button>
         </div>
       </div>
@@ -9553,18 +9614,23 @@ class Component extends DCLogic {
       authTabLoginStyle: s.authMode === 'login' ? 'background:var(--c-pri-150);color:var(--c-selected-ink)' : 'background:transparent;color:var(--c-ink-2)',
       authTabRegisterStyle: s.authMode === 'register' ? 'background:var(--c-pri-150);color:var(--c-selected-ink)' : 'background:transparent;color:var(--c-ink-2)',
       authSubmitLabel: s.authMode === 'register' ? 'Зарегистрироваться' : 'Войти',
-      onNavSettings: () => this.set({ screen: 'settings', err: '' }),
+      onNavSettings: () => this.set({ screen: 'settings', err: '', setMenu: true }),   /* v51: на телефоне — список разделов */
+      setMenuAttr: s.setMenu ? '1' : '0',
+      onSetMenu: () => this.set({ setMenu: true }),
       showSettings: s.screen === 'settings',
       advSettingsOpen: !!s.advSettingsOpen,
       onToggleAdvSettings: () => this.set({ advSettingsOpen: !s.advSettingsOpen }),
       advSettingsChevronStyle: 'flex:none;display:inline-flex;transform:rotate(' + (s.advSettingsOpen ? '180' : '0') + 'deg)',
       advSettingsHint: s.advSettingsOpen ? 'Свернуть' : 'Показать',
+      /* v51: название открытого раздела — для строки возврата на телефоне */
+      settingsTabLabel: ({ profiles: 'Профили участников', notif: 'Уведомления', general: 'Общие настройки' })[s.settingsTab || 'profiles'] || 'Настройки',
       settingsTabs: [
         { key: 'profiles', label: 'Профили участников' },
         { key: 'notif', label: 'Уведомления' },
         { key: 'general', label: 'Общие настройки' },
       ].map((t) => ({
         ...t,
+        onOpenMob: () => this.set({ settingsTab: t.key, setMenu: false }),   /* v51 */
         onSelect: () => this.set({ settingsTab: t.key }),
         tabStyle: 'display:flex;align-items:center;justify-content:center;box-sizing:border-box;padding:8px 16px;border-radius:8px;font:600 14px/20px \'Manrope\',sans-serif;cursor:pointer;white-space:nowrap;'
           + ((s.settingsTab || 'profiles') === t.key ? 'background:var(--c-pri-150);color:var(--c-selected-ink)'
