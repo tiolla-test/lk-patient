@@ -3291,7 +3291,8 @@ h1[data-dc="wiz-top-title"] { margin: 0; }
   font: 600 14px/20px 'Manrope', sans-serif; color: var(--c-danger); text-decoration: underline; text-underline-offset: 3px;
 }
 .dc-review-edit {
-  flex: none; background: none; border: 0; padding: 0 4px; margin: 0; cursor: pointer;
+  flex: none; background: none; border: 0; padding: 0 8px; margin: -8px -8px -8px 0; cursor: pointer;
+  min-height: 36px; display: inline-flex; align-items: center; border-radius: var(--radius-full);   /* v52: было 75×20 на десктопе */
   font: 600 14px/20px 'Manrope', sans-serif; color: var(--c-action); text-transform: none; letter-spacing: 0;
 }
 /* строка ошибки у поля: атрибут ставит проход a11y() в dc-ux */
@@ -3433,7 +3434,7 @@ input::placeholder,textarea::placeholder{color:var(--c-ink-3)}
         <svg class="dc-logo" viewBox="0 0 723 322" role="img" aria-label="ФИЦ БИОМЕД" style="height:96px"><use href="#dc-logo-fic"></use></svg>
       </div>
 
-      <div style="text-align:center;font:700 16px/24px 'Manrope',sans-serif;color:var(--c-ink);margin-bottom:24px">Личный кабинет</div>
+      <h1 style="text-align:center;font:700 16px/24px 'Manrope',sans-serif;color:var(--c-ink);margin:0 0 24px">Личный кабинет</h1>
 
       <div style="display:flex;gap:4px;padding:4px;background:var(--c-pri-50);border:1px solid var(--c-border-tint);border-radius:12px;margin-bottom:24px">
         <div data-dc-hover onClick="{{ onAuthTabLogin }}" style="flex:1;display:flex;align-items:center;justify-content:center;box-sizing:border-box;padding:8px 16px;border-radius:8px;font:600 14px/20px 'Manrope',sans-serif;cursor:pointer;white-space:nowrap;{{ authTabLoginStyle }}">Вход</div>
