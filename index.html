@@ -3221,6 +3221,68 @@ html, body { overflow-x: clip; }
     background: transparent !important; padding: 12px 0 !important;
   }
 }
+
+/* ---------- v48: мастер на телефоне как поток (аудит 5, пп. 1, 2, 3, 14; 22.10) ----------
+   Как оформление заказа в приложениях Ozon и WB: сверху панель со стрелкой назад и шагом, таб-бара нет,
+   главная кнопка шага прибита к низу экрана. Признак мастера — панель wiz-top в DOM (она есть только в мастере). */
+@media (max-width: 620px) {
+  body:has([data-dc="wiz-top"]) header { display: none !important; }
+  /* запас под полосу действий: с текстом ошибки она 97, в две строки — до 113 */
+  body:has([data-dc="wiz-top"]) { padding-bottom: calc(120px + env(safe-area-inset-bottom, 0px)) !important; }
+  body:has([data-dc="wiz-top"]) #dc-mod-fab { bottom: calc(84px + env(safe-area-inset-bottom, 0px)) !important; }
+
+  main[data-screen-label="Заявка на исследование"] {
+    flex-direction: column !important; justify-content: flex-start !important; align-items: stretch !important;
+    padding-top: 0 !important;
+  }
+  [data-dc="wiz-top"] {
+    position: sticky; top: 0; z-index: 30; box-sizing: border-box; width: 100%;
+    background: var(--c-white); border-bottom: 1px solid var(--c-divider);
+  }
+  [data-dc="wiz-top-row"] { display: flex; align-items: center; gap: 4px; height: 52px; padding: 0 4px; box-sizing: border-box; }
+  [data-dc="wiz-back"], [data-dc="wiz-help"] {
+    flex: none; box-sizing: border-box; width: 44px; height: 44px; min-height: 44px !important; padding: 0 !important;
+    border: 0; border-radius: var(--radius-full); background: transparent; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; color: var(--c-ink);
+  }
+  [data-dc="wiz-help"] { color: var(--c-pri-800); }
+  [data-dc="wiz-top-text"] { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+  [data-dc="wiz-top-title"] { font: 600 14px/20px 'Manrope', sans-serif; color: var(--c-ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  [data-dc="wiz-top-sub"] { font: 500 12px/16px 'Manrope', sans-serif; color: var(--c-ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  [data-dc="wiz-top-steps"] { display: flex; gap: 4px; padding: 0 16px 8px; }
+
+  /* п. 2, 14: степпер и повтор заголовков. Скрыт только <aside> колонки: в ней же демо-панель. */
+  [data-dc="wizard-rail"] > aside { display: none !important; }
+  /* пустая колонка давала лишнюю ячейку сетки и вторую полосу фона 8 под панелью; contents убирает ячейку,
+     демо-панель внутри — position: fixed, ей ячейка не нужна */
+  [data-dc="wizard-rail"] { display: contents !important; }
+  [data-dc="wizard-head"] [data-dc="applicant-pill"],
+  [data-dc="wizard-head"] h1,
+  [data-dc="anketa-caption"],
+  [data-dc="wizard-grid"] [data-dc="help-card-foot"] { display: none !important; }
+  [data-dc="wizard-head"] { padding: 16px !important; }
+  [data-dc="wizard-head"]:not(:has([data-dc="form-sub"])):not(:has([data-dc="head-actions"])) { display: none !important; }
+
+  /* п. 1: одна полоса главного действия у всех шагов, прибита к низу экрана */
+  [data-dc="wizard-actions"],
+  [data-dc="wizard-nav"],
+  [data-dc="head-actions"] {
+    position: fixed !important; left: 0 !important; right: 0 !important; bottom: 0 !important; top: auto !important;
+    z-index: 30 !important; box-sizing: border-box; width: auto !important; margin: 0 !important;
+    display: flex !important; flex-direction: column !important; align-items: stretch !important; gap: 8px !important;
+    background: var(--c-white) !important; border: 0 !important; border-top: 1px solid var(--c-divider) !important;
+    border-radius: 0 !important; box-shadow: 0 -4px 20px rgba(11, 115, 194, 0.08) !important;
+    -webkit-backdrop-filter: none !important; backdrop-filter: none !important;
+    padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+  [data-dc="wizard-nav"] > button:first-child,
+  [data-dc="wizard-actions-row"] > button:first-child,
+  [data-dc="head-actions"] .dc-flexrow-10 > button:nth-child(2) { display: none !important; }
+  [data-dc="wizard-nav"] > button,
+  [data-dc="wizard-actions"] button,
+  [data-dc="head-actions"] button { width: 100% !important; flex: 1 1 100% !important; justify-content: center !important; }
+  [data-dc="head-actions"] .dc-flexrow-10 { width: 100%; }
+}
 </style>
 </head>
 <body>
@@ -4214,6 +4276,21 @@ input::placeholder,textarea::placeholder{color:var(--c-ink-3)}
   <!-- ===== Screen: wizard ===== -->
   <sc-if value="{{ showWizard }}" hint-placeholder-val="{{ true }}">
     <main data-screen-label="Заявка на исследование" style="flex:1;display:flex;justify-content:center;padding:36px 48px 0">
+      <!-- v48: верхняя панель мастера на телефоне (аудит 5, пп. 2–3, 22.10): стрелка назад, шаг, участник и исследование,
+           полоса шагов. Шапка сайта и таб-бар в мастере на телефоне скрыты, колонка шагов тоже. -->
+      <div class="dc-mob-only" data-dc="wiz-top">
+        <div data-dc="wiz-top-row">
+          <button type="button" data-dc="wiz-back" onClick="{{ onWizBack }}" aria-label="Назад"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+          <div data-dc="wiz-top-text">
+            <div data-dc="wiz-top-title">{{ wizTopTitle }}</div>
+            <div data-dc="wiz-top-sub">{{ wizTopSub }}</div>
+          </div>
+          <button type="button" data-dc="wiz-help" aria-label="Нужна помощь?"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M4 11C4 7.134 7.134 4 11 4s7 3.134 7 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path><rect x="2" y="11" width="4" height="6" rx="2" fill="currentColor"></rect><rect x="16" y="11" width="4" height="6" rx="2" fill="currentColor"></rect><path d="M18 17v1a3 3 0 0 1-3 3h-2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg></button>
+        </div>
+        <div data-dc="wiz-top-steps">
+          <sc-for list="{{ wizTopSegs }}" as="sg" hint-placeholder-count="4"><div style="{{ sg.style }}"></div></sc-for>
+        </div>
+      </div>
       <div data-dc="wizard-grid" style="width:1180px;max-width:100%;display:grid;grid-template-columns:308px 1fr;gap:20px;align-items:stretch">
 
         <!-- Left column: steps panel + moderator block below — pinned together on scroll -->
@@ -4299,15 +4376,15 @@ input::placeholder,textarea::placeholder{color:var(--c-ink-3)}
                    на весь мастер — слово пользователя 01.10); шаг называет подпись ниже и рельса -->
               <h1 data-dc-substep="{{ subStepMark }}" style="font:700 16px/24px 'Manrope',sans-serif;color:var(--c-ink);margin:0 0 4px">Исследование «{{ studyTitle }}»</h1>
               <sc-if value="{{ showAnketaCaption }}" hint-placeholder-val="{{ false }}">
-              <p style="font:400 14px/20px 'Manrope',sans-serif;color:var(--c-ink-2);margin:0 0 4px">Для участия в исследовании необходимо заполнить анкету</p>
+              <p data-dc="anketa-caption" style="font:400 14px/20px 'Manrope',sans-serif;color:var(--c-ink-2);margin:0 0 4px">Для участия в исследовании необходимо заполнить анкету</p>
               </sc-if>
               <sc-if value="{{ showFormSubheading }}" hint-placeholder-val="{{ true }}">
-              <p style="font:400 14px/20px 'Manrope',sans-serif;color:var(--c-ink-2);margin:0">{{ formSubheading }}</p>
+              <p data-dc="form-sub" style="font:400 14px/20px 'Manrope',sans-serif;color:var(--c-ink-2);margin:0">{{ formSubheading }}</p>
               </sc-if>
             </div>
             <!-- v13: сводка шага 2 анкеты СД1 — кнопки справа в шапке, как до аудита 1 (слово пользователя 01.10) -->
             <sc-if value="{{ showHeadActions }}" hint-placeholder-val="{{ false }}">
-            <div style="flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:8px">
+            <div data-dc="head-actions" style="flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:8px">
               <div class="dc-flexrow-10">
                 <button onClick="{{ onSubmit }}" style="height:36px;padding:0 20px;background:linear-gradient(135deg,var(--c-btn-1) 0%,var(--c-btn-2) 50%,var(--c-btn-3) 100%);color:var(--c-on-btn);border:none;border-radius:var(--radius-full);font:600 14px/20px 'Manrope',sans-serif;cursor:pointer;box-shadow:none;white-space:nowrap" style-hover="background:linear-gradient(135deg,var(--c-btn-hover-1) 0%,var(--c-btn-hover-2) 50%,var(--c-btn-hover-3) 100%);box-shadow:0 1px 2px rgba(10, 40, 80,0.20),0 1px 3px 1px rgba(10, 40, 80,0.10);transform:translateY(-1px)">{{ submitLabel }}</button>
                 <button onClick="{{ onCancelBtn }}" style="height:36px;padding:0 20px;--dc-keepborder:1;background:transparent;color:var(--c-ink-2);border:1.5px solid var(--c-border-field);border-radius:var(--radius-full);font:600 14px/20px 'Manrope',sans-serif;cursor:pointer;white-space:nowrap" style-hover="background:var(--c-surface-3)">{{ cancelLabel }}</button>
@@ -9259,6 +9336,24 @@ class Component extends DCLogic {
       subErrText: s.err || '',
       showAgeBlock: wizard && s.step === 2 && !s.pending && !s.review && curSub === 1 && ageOver,
       onSubPrev: () => { if (curSub > 1) goSub(curSub - 1); },
+      /* v48: верхняя панель мастера на телефоне (аудит 5, пп. 2–3). Номер шага — показанный, со сдвигом визита. */
+      wizTopTitle: 'Шаг ' + (s.step - сдвигВизита) + ' из ' + (STEPS.length - сдвигВизита) + ' · ' + STEPS[s.step - 1].title,
+      wizTopSub: (wizardApplicant ? wizardApplicant.full + ' · ' : '') + study.title,
+      wizTopSegs: STEPS.slice(сдвигВизита).map((st, i) => {
+        const n = i + 1 + сдвигВизита;
+        return { style: 'flex:1;height:4px;border-radius:2px;background:'
+          + (n < s.step ? 'var(--c-ok)' : n === s.step ? 'var(--c-step-on)' : 'var(--c-divider)') };
+      }),
+      /* Стрелка назад: подшаг анкеты → предыдущий подшаг; сводка → правка данных (как «Изменить данные»);
+         иначе — на «Мои исследования»: эта вкладка выбрана, пока открыт мастер. Черновик сохраняется сам. */
+      onWizBack: () => {
+        if (s.step === 2 && !s.pending && s.review) { this.set({ review: false, editing: true, err: '' }); return; }
+        if (s.step === 2 && !s.pending && s.studyId === 'ait' && (s.monoStep || 1) > 1) {
+          this.set({ monoStep: Math.min(Math.max(s.monoStep || 1, 1), MONO_SECTIONS.length) - 1, err: '' }); return;
+        }
+        if (s.step === 2 && !s.pending && s.studyId !== 'ait' && curSub > 1) { goSub(curSub - 1); return; }
+        this.set({ screen: 'my', err: '' });
+      },
       onSubNext: () => {
         if (ageOver) { this.set({ ageBlock: true, err: '', subStep: 1, scrollKey: 'age', scrollNonce: (this.state.scrollNonce || 0) + 1 }); return; }
         if (curSub === 9 && !(s.docs && s.docs.extract)) { this.set({ err: 'Загрузите выписку из истории болезни, чтобы продолжить' }); return; }
