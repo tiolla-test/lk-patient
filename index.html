@@ -3283,6 +3283,24 @@ html, body { overflow-x: clip; }
   [data-dc="head-actions"] button { width: 100% !important; flex: 1 1 100% !important; justify-content: center !important; }
   [data-dc="head-actions"] .dc-flexrow-10 { width: 100%; }
 }
+
+/* ---------- v49: доступность (аудит 6, пп. 1–5, 10; 22.10) ---------- */
+h1[data-dc="wiz-top-title"] { margin: 0; }
+.dc-err-link {
+  background: none; border: 0; padding: 0; margin: 0; cursor: pointer; min-width: 44px; min-height: 44px; text-align: left;
+  font: 600 14px/20px 'Manrope', sans-serif; color: var(--c-danger); text-decoration: underline; text-underline-offset: 3px;
+}
+.dc-review-edit {
+  flex: none; background: none; border: 0; padding: 0 4px; margin: 0; cursor: pointer;
+  font: 600 14px/20px 'Manrope', sans-serif; color: var(--c-action); text-transform: none; letter-spacing: 0;
+}
+/* строка ошибки у поля: атрибут ставит проход a11y() в dc-ux */
+[data-dc-invalid]::after {
+  display: block; margin-top: 4px; font: 600 12px/16px 'Manrope', sans-serif; color: var(--c-danger);
+}
+[data-dc-invalid="empty"]::after { content: 'Заполните поле'; }
+[data-dc-invalid="format"]::after { content: 'Проверьте значение'; }
+[data-dc-invalid="choice"]::after { content: 'Выберите вариант'; }
 </style>
 </head>
 <body>
@@ -3337,7 +3355,7 @@ input::placeholder,textarea::placeholder{color:var(--c-ink-3)}
         </div>
         <div>
           <div class="dc-lbl">Пароль</div>
-          <input class="dc-input" type="password" placeholder="Введите пароль" value="{{ authForm.password }}" onChange="{{ onAuthPassword }}">
+          <input class="dc-input" type="password" autocomplete="current-password" placeholder="Введите пароль" value="{{ authForm.password }}" onChange="{{ onAuthPassword }}">
         </div>
         <sc-if value="{{ isRegisterMode }}" hint-placeholder-val="{{ false }}">
           <div>
@@ -4020,12 +4038,12 @@ input::placeholder,textarea::placeholder{color:var(--c-ink-3)}
           <sc-if value="{{ profileShowForm }}" hint-placeholder-val="{{ false }}">
             <div data-dc-m="flat" style="background:var(--c-surface-2);border:1px solid var(--c-border-plate);border-radius:12px;padding:16px 16px">
               <div data-dc="grid-multi" style="display:grid;grid-template-columns:1fr 1fr;gap:8px 32px;margin-bottom:8px">
-                <div><div class="dc-lbl">Фамилия</div><input value="{{ profile.last }}" onChange="{{ onProfileLast }}" placeholder="Фамилия" class="dc-input-inline" style="width:100%" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)"></div>
-                <div><div class="dc-lbl">Имя</div><input value="{{ profile.first }}" onChange="{{ onProfileFirst }}" placeholder="Имя" class="dc-input-inline" style="width:100%" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)"></div>
+                <div><div class="dc-lbl">Фамилия</div><input value="{{ profile.last }}" autocomplete="family-name" onChange="{{ onProfileLast }}" placeholder="Фамилия" class="dc-input-inline" style="width:100%" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)"></div>
+                <div><div class="dc-lbl">Имя</div><input value="{{ profile.first }}" autocomplete="given-name" onChange="{{ onProfileFirst }}" placeholder="Имя" class="dc-input-inline" style="width:100%" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)"></div>
               </div>
               <div data-dc="grid-multi" style="display:grid;grid-template-columns:1fr 1fr;gap:8px 32px;margin-bottom:16px">
-                <div><div class="dc-lbl">Отчество</div><input value="{{ profile.mid }}" onChange="{{ onProfileMid }}" placeholder="Отчество" class="dc-input-inline" style="width:100%" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)"></div>
-                <div><div class="dc-lbl">Дата рождения</div><input value="{{ profile.birth }}" onChange="{{ onProfileBirth }}" type="date" class="dc-input-inline" style="width:100%" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)"></div>
+                <div><div class="dc-lbl">Отчество</div><input value="{{ profile.mid }}" autocomplete="additional-name" onChange="{{ onProfileMid }}" placeholder="Отчество" class="dc-input-inline" style="width:100%" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)"></div>
+                <div><div class="dc-lbl">Дата рождения</div><input value="{{ profile.birth }}" autocomplete="bday" onChange="{{ onProfileBirth }}" type="date" class="dc-input-inline" style="width:100%" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)"></div>
               </div>
               <sc-if value="{{ showProfileErr }}" hint-placeholder-val="{{ false }}">
                 <div style="font:600 12px/16px 'Manrope',sans-serif;color:var(--c-danger);margin-bottom:12px">{{ profileErrMsg }}</div>
@@ -4171,15 +4189,15 @@ input::placeholder,textarea::placeholder{color:var(--c-ink-3)}
           <div style="display:flex;flex-direction:column;gap:12px;max-width:420px">
             <div>
               <div class="dc-lbl">Текущий пароль</div>
-              <input type="password" value="{{ pwCur }}" onChange="{{ onPwCur }}" placeholder="••••••••" class="dc-input" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
+              <input type="password" autocomplete="current-password" value="{{ pwCur }}" onChange="{{ onPwCur }}" placeholder="••••••••" class="dc-input" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
             </div>
             <div>
               <div class="dc-lbl">Новый пароль</div>
-              <input type="password" value="{{ pwNew }}" onChange="{{ onPwNew }}" placeholder="Не менее 8 символов" class="dc-input" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
+              <input type="password" autocomplete="new-password" value="{{ pwNew }}" onChange="{{ onPwNew }}" placeholder="Не менее 8 символов" class="dc-input" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
             </div>
             <div>
               <div class="dc-lbl">Повторите новый пароль</div>
-              <input type="password" value="{{ pwRep }}" onChange="{{ onPwRep }}" placeholder="••••••••" class="dc-input" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
+              <input type="password" autocomplete="new-password" value="{{ pwRep }}" onChange="{{ onPwRep }}" placeholder="••••••••" class="dc-input" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
             </div>
             <sc-if value="{{ showPwMsg }}" hint-placeholder-val="{{ false }}">
               <div style="{{ pwMsgStyle }}">{{ pwMsg }}</div>
@@ -4282,7 +4300,7 @@ input::placeholder,textarea::placeholder{color:var(--c-ink-3)}
         <div data-dc="wiz-top-row">
           <button type="button" data-dc="wiz-back" onClick="{{ onWizBack }}" aria-label="Назад"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
           <div data-dc="wiz-top-text">
-            <div data-dc="wiz-top-title">{{ wizTopTitle }}</div>
+            <h1 data-dc="wiz-top-title">{{ wizTopTitle }}</h1>
             <div data-dc="wiz-top-sub">{{ wizTopSub }}</div>
           </div>
           <button type="button" data-dc="wiz-help" aria-label="Нужна помощь?"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M4 11C4 7.134 7.134 4 11 4s7 3.134 7 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path><rect x="2" y="11" width="4" height="6" rx="2" fill="currentColor"></rect><rect x="16" y="11" width="4" height="6" rx="2" fill="currentColor"></rect><path d="M18 17v1a3 3 0 0 1-3 3h-2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg></button>
@@ -4391,7 +4409,7 @@ input::placeholder,textarea::placeholder{color:var(--c-ink-3)}
               </div>
               <sc-if value="{{ showErr }}" hint-placeholder-val="{{ false }}">
                 <div style="display:flex;align-items:center;gap:12px">
-                  <div style="color:var(--c-danger);font:600 12px/16px 'Manrope',sans-serif;text-align:right">{{ errText }}</div>
+                  <div role="alert" style="color:var(--c-danger);font:600 12px/16px 'Manrope',sans-serif;text-align:right">{{ errText }}</div>
                   <sc-if value="{{ showNextErr }}" hint-placeholder-val="{{ false }}">
                     <span onClick="{{ onNextError }}" class="dc-btn-jump">{{ nextErrLabel }}</span>
                   </sc-if>
@@ -4469,7 +4487,7 @@ input::placeholder,textarea::placeholder{color:var(--c-ink-3)}
               <div data-dc="substep-head" style="position:sticky;top:64px;z-index:7;background:var(--c-white);border:1.5px solid var(--c-border-tint);border-radius:12px;padding:16px 16px;margin-bottom:16px;box-shadow:0 4px 24px rgba(10, 40, 80,0.08)">
                 <!-- v25: ряд «название раздела / пояснение» снят, как у СД1 (v15); пояснение — в начале формы раздела -->
                 <sc-if value="{{ monoShowErr }}" hint-placeholder-val="{{ false }}">
-                  <div style="display:flex;align-items:center;gap:8px;background:var(--c-danger-tint);border:1.5px solid var(--c-danger-border);border-radius:8px;padding:8px 12px;margin-bottom:12px;font:600 12px/16px 'Manrope',sans-serif;color:var(--c-danger)">{{ monoErrText }}</div>
+                  <div data-dc="err-summary" role="alert" style="display:flex;align-items:center;gap:8px;background:var(--c-danger-tint);border:1.5px solid var(--c-danger-border);border-radius:8px;padding:8px 12px;margin-bottom:12px;font:600 14px/20px 'Manrope',sans-serif;color:var(--c-danger)">{{ monoErrText }}</div>
                 </sc-if>
                 <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
                   <div style="flex:1;height:8px;border-radius:99px;background:var(--c-divider);overflow:hidden">
@@ -4500,7 +4518,7 @@ input::placeholder,textarea::placeholder{color:var(--c-ink-3)}
                     <svg width="18" height="18" viewBox="0 0 20 20" fill="none" class="dc-flexnone"><circle cx="10" cy="10" r="8.3" stroke="var(--c-danger)" stroke-width="1.4"></circle><path d="M10 6v4.5M10 13.4v.1" stroke="var(--c-danger)" stroke-width="1.6" stroke-linecap="round"></path></svg>
                     <span style="font:600 14px/20px 'Manrope',sans-serif;color:var(--c-danger)">Врач вернул анкету на доработку — замечаний: {{ mcCount }}</span>
                   </div>
-                  <div style="font:400 14px/20px 'Manrope',sans-serif;color:var(--c-danger);margin-bottom:12px">Исправьте отмеченные красным поля. После исправления замечание снимается автоматически.</div>
+                  <div style="font:400 14px/20px 'Manrope',sans-serif;color:var(--c-danger);margin-bottom:12px">Исправьте поля из списка ниже. После исправления замечание снимается автоматически.</div>
                   <div style="display:flex;flex-direction:column;gap:8px">
                     <sc-for list="{{ modItems }}" as="mi" hint-placeholder-count="2">
                       <div style="background:var(--c-white);border:1.5px solid var(--c-danger-border);border-radius:8px;padding:12px 12px;display:flex;align-items:flex-start;gap:12px">
@@ -4654,7 +4672,7 @@ input::placeholder,textarea::placeholder{color:var(--c-ink-3)}
               <div style="display:flex;flex-direction:column;gap:16px">
                 <sc-for list="{{ monoReview }}" as="ms" hint-placeholder-count="4">
                   <div data-dc-m="block" style="background:var(--c-surface-tint);border:1px solid var(--c-border-plate);border-radius:12px;padding:16px 20px">
-                    <div style="font:600 14px/20px 'Manrope',sans-serif;color:var(--c-ink);margin-bottom:12px">{{ ms.title }}</div>
+                    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px"><div style="font:600 14px/20px 'Manrope',sans-serif;color:var(--c-ink)">{{ ms.title }}</div><button type="button" class="dc-review-edit" onClick="{{ ms.onEdit }}" aria-label="{{ ms.editLabel }}">Изменить</button></div>
                     <sc-for list="{{ ms.rows }}" as="mr" hint-placeholder-count="3">
                       <div style="display:flex;gap:16px;padding:8px 0;border-bottom:1px solid #E9EFF7">
                         <div style="flex:1;font:400 14px/20px 'Manrope',sans-serif;color:var(--c-ink-3)">{{ mr.k }}</div>
@@ -4675,7 +4693,15 @@ input::placeholder,textarea::placeholder{color:var(--c-ink-3)}
                 <!-- v15 (слово пользователя 01.10): ряд «Шаг 2.N — название / подсказка» снят,
                      «Назад / Далее» вынесены в шапку формы -->
                 <sc-if value="{{ showSubErr }}" hint-placeholder-val="{{ false }}">
-                  <div style="display:flex;align-items:center;gap:8px;background:var(--c-danger-tint);border:1.5px solid var(--c-danger-border);border-radius:8px;padding:8px 12px;margin-bottom:12px;font:600 12px/16px 'Manrope',sans-serif;color:var(--c-danger)">{{ subErrText }}</div>
+                  <!-- v49: сводка ошибок со ссылками на поля (аудит 6, п. 5; NHS error summary) -->
+                  <div data-dc="err-summary" role="alert" style="display:flex;flex-direction:column;align-items:flex-start;gap:4px;background:var(--c-danger-tint);border:1.5px solid var(--c-danger-border);border-radius:8px;padding:8px 12px;margin-bottom:12px;font:600 14px/20px 'Manrope',sans-serif;color:var(--c-danger)">
+                    <div>{{ subErrText }}</div>
+                    <sc-if value="{{ showSubErrLinks }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex;flex-wrap:wrap;gap:0 16px">
+                        <sc-for list="{{ subErrLinks }}" as="el" hint-placeholder-count="2"><button type="button" class="dc-err-link" onClick="{{ el.onGo }}">{{ el.label }}</button></sc-for>
+                      </div>
+                    </sc-if>
+                  </div>
                 </sc-if>
                 <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
                   <div style="flex:1;height:8px;background:var(--c-divider);border-radius:99px;overflow:hidden">
@@ -4781,13 +4807,13 @@ input::placeholder,textarea::placeholder{color:var(--c-ink-3)}
               <div class="dc-sectiontitle">Личные данные</div>
               <div style="margin-bottom:12px">
                 <div class="dc-lbl">ФИО <span class="dc-danger-text">*</span></div>
-                <input value="{{ f.fio }}" onChange="{{ onFio }}" id="f2-fio" placeholder="Иванов Иван Иванович" style="box-sizing:border-box;width:100%;height:36px;padding:0 12px;border:1.5px solid {{ bd.fio }};border-radius:8px;background:var(--c-white);font:500 14px/20px 'Manrope',sans-serif;color:var(--c-ink);outline:none" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
+                <input value="{{ f.fio }}" onChange="{{ onFio }}" id="f2-fio" autocomplete="{{ acName }}" placeholder="Иванов Иван Иванович" style="box-sizing:border-box;width:100%;height:36px;padding:0 12px;border:1.5px solid {{ bd.fio }};border-radius:8px;background:var(--c-white);font:500 14px/20px 'Manrope',sans-serif;color:var(--c-ink);outline:none" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
                 <div class="dc-hint">Полностью ФИО человека, на которого заполняется анкета</div>
               </div>
               <div data-dc="grid-multi" style="display:grid;grid-template-columns:1fr 1fr;gap:12px 32px;margin-bottom:12px">
                 <div>
                   <div class="dc-lbl">Дата рождения <span class="dc-danger-text">*</span></div>
-                  <input type="date" value="{{ f.birth }}" onChange="{{ onBirth }}" id="f2-birth" style="box-sizing:border-box;width:100%;height:36px;padding:0 12px;border:1.5px solid {{ bd.birth }};border-radius:8px;background:var(--c-white);font:500 14px/20px 'Manrope',sans-serif;color:var(--c-ink);outline:none" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
+                  <input type="date" value="{{ f.birth }}" onChange="{{ onBirth }}" id="f2-birth" autocomplete="{{ acBday }}" style="box-sizing:border-box;width:100%;height:36px;padding:0 12px;border:1.5px solid {{ bd.birth }};border-radius:8px;background:var(--c-white);font:500 14px/20px 'Manrope',sans-serif;color:var(--c-ink);outline:none" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
                   <div class="dc-hint">От даты рождения зависит блок «Дополнительно» на подшаге 2.8</div>
                 </div>
                 <div>
@@ -4810,13 +4836,13 @@ input::placeholder,textarea::placeholder{color:var(--c-ink-3)}
               <div data-dc="grid-multi" style="display:grid;grid-template-columns:1fr 1fr;gap:12px 32px;margin-bottom:4px">
                 <div>
                   <div class="dc-lbl">Телефон для связи <span class="dc-danger-text">*</span></div>
-                  <input type="tel" value="{{ f.phone }}" onChange="{{ onPhone }}" id="f2-phone" placeholder="+7 (900) 000-00-00" style="box-sizing:border-box;width:100%;height:36px;padding:0 12px;border:1.5px solid {{ bd.phone }};border-radius:8px;background:var(--c-white);font:500 14px/20px 'Manrope',sans-serif;color:var(--c-ink);outline:none" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
+                  <input type="tel" value="{{ f.phone }}" onChange="{{ onPhone }}" id="f2-phone" autocomplete="tel" placeholder="+7 (900) 000-00-00" style="box-sizing:border-box;width:100%;height:36px;padding:0 12px;border:1.5px solid {{ bd.phone }};border-radius:8px;background:var(--c-white);font:500 14px/20px 'Manrope',sans-serif;color:var(--c-ink);outline:none" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
                   <div class="dc-hint">Не передаётся третьим лицам</div>
                   <sc-if value="{{ phoneBad }}" hint-placeholder-val="{{ false }}"><div class="dc-errtext">{{ fe.phone }}</div></sc-if>
                 </div>
                 <div>
                   <div class="dc-lbl">Почта (для отправки результатов) <span class="dc-danger-text">*</span></div>
-                  <input type="email" value="{{ f.email }}" onChange="{{ onEmail }}" id="f2-email" placeholder="name@example.ru" style="box-sizing:border-box;width:100%;height:36px;padding:0 12px;border:1.5px solid {{ bd.email }};border-radius:8px;background:var(--c-white);font:500 14px/20px 'Manrope',sans-serif;color:var(--c-ink);outline:none" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
+                  <input type="email" value="{{ f.email }}" onChange="{{ onEmail }}" id="f2-email" autocomplete="email" placeholder="name@example.ru" style="box-sizing:border-box;width:100%;height:36px;padding:0 12px;border:1.5px solid {{ bd.email }};border-radius:8px;background:var(--c-white);font:500 14px/20px 'Manrope',sans-serif;color:var(--c-ink);outline:none" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
                   <div class="dc-hint">Сюда придёт репорт с результатом в течение 6 месяцев</div>
                   <sc-if value="{{ emailBad }}" hint-placeholder-val="{{ false }}"><div class="dc-errtext">{{ fe.email }}</div></sc-if>
                 </div>
@@ -4864,11 +4890,11 @@ input::placeholder,textarea::placeholder{color:var(--c-ink-3)}
               <div class="dc-grid3">
                 <div>
                   <div class="dc-lbl">Рост (см) <span class="dc-danger-text">*</span></div>
-                  <input type="number" value="{{ f.height }}" onChange="{{ onHeight }}" id="f2-height" placeholder="170" style="box-sizing:border-box;width:100%;height:36px;padding:0 12px;border:1.5px solid {{ bd.height }};border-radius:8px;background:var(--c-white);font:500 14px/20px 'Manrope',sans-serif;color:var(--c-ink);outline:none" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
+                  <input type="number" value="{{ f.height }}" onChange="{{ onHeight }}" id="f2-height" placeholder="например, 170" style="box-sizing:border-box;width:100%;height:36px;padding:0 12px;border:1.5px solid {{ bd.height }};border-radius:8px;background:var(--c-white);font:500 14px/20px 'Manrope',sans-serif;color:var(--c-ink);outline:none" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
                 </div>
                 <div>
                   <div class="dc-lbl">Масса тела (кг) <span class="dc-danger-text">*</span></div>
-                  <input type="number" value="{{ f.weight }}" onChange="{{ onWeight }}" id="f2-weight" placeholder="65" style="box-sizing:border-box;width:100%;height:36px;padding:0 12px;border:1.5px solid {{ bd.weight }};border-radius:8px;background:var(--c-white);font:500 14px/20px 'Manrope',sans-serif;color:var(--c-ink);outline:none" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
+                  <input type="number" value="{{ f.weight }}" onChange="{{ onWeight }}" id="f2-weight" placeholder="например, 65" style="box-sizing:border-box;width:100%;height:36px;padding:0 12px;border:1.5px solid {{ bd.weight }};border-radius:8px;background:var(--c-white);font:500 14px/20px 'Manrope',sans-serif;color:var(--c-ink);outline:none" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
                 </div>
                 <div>
                   <div class="dc-lbl">ИМТ <span style="font-weight:500;color:var(--c-ink-3)">— расчёт</span></div>
@@ -4888,17 +4914,17 @@ input::placeholder,textarea::placeholder{color:var(--c-ink-3)}
               <div class="dc-grid3">
                 <div>
                   <div class="dc-lbl">АД систолическое</div>
-                  <input type="number" value="{{ f.bpSys }}" onChange="{{ onBpSys }}" id="f2-bpSys" placeholder="120" class="dc-input" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
+                  <input type="number" value="{{ f.bpSys }}" onChange="{{ onBpSys }}" id="f2-bpSys" placeholder="например, 120" class="dc-input" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
                   <div class="dc-hint">мм рт. ст., «верхнее»</div>
                 </div>
                 <div>
                   <div class="dc-lbl">АД диастолическое</div>
-                  <input type="number" value="{{ f.bpDia }}" onChange="{{ onBpDia }}" id="f2-bpDia" placeholder="80" class="dc-input" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
+                  <input type="number" value="{{ f.bpDia }}" onChange="{{ onBpDia }}" id="f2-bpDia" placeholder="например, 80" class="dc-input" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
                   <div class="dc-hint">мм рт. ст., «нижнее»</div>
                 </div>
                 <div>
                   <div class="dc-lbl">ЧСС (пульс)</div>
-                  <input type="number" value="{{ f.hr }}" onChange="{{ onHr }}" id="f2-hr" placeholder="70" class="dc-input" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
+                  <input type="number" value="{{ f.hr }}" onChange="{{ onHr }}" id="f2-hr" placeholder="например, 70" class="dc-input" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
                   <div class="dc-hint">ударов в минуту в покое</div>
                 </div>
               </div>
@@ -5097,7 +5123,7 @@ input::placeholder,textarea::placeholder{color:var(--c-ink-3)}
                     <sc-if value="{{ injHospYes }}" hint-placeholder-val="{{ false }}">
                       <div>
                         <div class="dc-lbl">Длительность (дней)</div>
-                        <input type="number" value="{{ f.injHospLen }}" onChange="{{ onInjHospLen }}" id="f2-injHospLen" placeholder="7" class="dc-input" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
+                        <input type="number" value="{{ f.injHospLen }}" onChange="{{ onInjHospLen }}" id="f2-injHospLen" placeholder="например, 7" class="dc-input" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
                       </div>
                     </sc-if>
                   </div>
@@ -5208,11 +5234,11 @@ input::placeholder,textarea::placeholder{color:var(--c-ink-3)}
                   <div class="dc-grid2">
                     <div>
                       <div class="dc-lbl">Сигарет в день</div>
-                      <input type="number" value="{{ f.smokeDay }}" onChange="{{ onSmokeDay }}" id="f2-smokeDay" placeholder="10" class="dc-input" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
+                      <input type="number" value="{{ f.smokeDay }}" onChange="{{ onSmokeDay }}" id="f2-smokeDay" placeholder="например, 10" class="dc-input" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
                     </div>
                     <div>
                       <div class="dc-lbl">Стаж курения (лет)</div>
-                      <input type="number" value="{{ f.smokeYrs }}" onChange="{{ onSmokeYrs }}" id="f2-smokeYrs" placeholder="5" class="dc-input" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
+                      <input type="number" value="{{ f.smokeYrs }}" onChange="{{ onSmokeYrs }}" id="f2-smokeYrs" placeholder="например, 5" class="dc-input" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
                     </div>
                   </div>
                   <div>
@@ -5222,7 +5248,7 @@ input::placeholder,textarea::placeholder{color:var(--c-ink-3)}
                   <sc-if value="{{ smokeQuitYes }}" hint-placeholder-val="{{ false }}">
                     <div class="dc-maxw260">
                       <div class="dc-lbl">Сколько раз пытались</div>
-                      <input type="number" value="{{ f.smokeQuitTimes }}" onChange="{{ onSmokeQuitTimes }}" id="f2-smokeQuitTimes" placeholder="2" class="dc-input" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
+                      <input type="number" value="{{ f.smokeQuitTimes }}" onChange="{{ onSmokeQuitTimes }}" id="f2-smokeQuitTimes" placeholder="например, 2" class="dc-input" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
                     </div>
                   </sc-if>
                 </div>
@@ -5231,11 +5257,11 @@ input::placeholder,textarea::placeholder{color:var(--c-ink-3)}
                 <div data-dc="grid-multi" data-dc-m="sub" style="margin-top:16px;padding:16px;background:var(--c-white);border:1.5px solid var(--c-border-tint);border-radius:12px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px 20px">
                   <div>
                     <div class="dc-lbl">Стаж курения (лет)</div>
-                    <input type="number" value="{{ f.smokeExYrs }}" onChange="{{ onSmokeExYrs }}" id="f2-smokeExYrs" placeholder="10" class="dc-input" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
+                    <input type="number" value="{{ f.smokeExYrs }}" onChange="{{ onSmokeExYrs }}" id="f2-smokeExYrs" placeholder="например, 10" class="dc-input" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
                   </div>
                   <div>
                     <div class="dc-lbl">Давность отказа (лет)</div>
-                    <input type="number" value="{{ f.smokeExAgo }}" onChange="{{ onSmokeExAgo }}" id="f2-smokeExAgo" placeholder="3" class="dc-input" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
+                    <input type="number" value="{{ f.smokeExAgo }}" onChange="{{ onSmokeExAgo }}" id="f2-smokeExAgo" placeholder="например, 3" class="dc-input" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
                   </div>
                   <div>
                     <div class="dc-lbl">Причина отказа</div>
@@ -5556,7 +5582,7 @@ input::placeholder,textarea::placeholder{color:var(--c-ink-3)}
                   <sc-if value="{{ aTobNow }}" hint-placeholder-val="{{ false }}">
                     <div style="margin-top:12px;max-width:260px">
                       <div class="dc-lbl">Количество сигарет в день</div>
-                      <input type="number" value="{{ f.aTobDay }}" onChange="{{ onATobDay }}" id="f2-aTobDay" placeholder="10" class="dc-input" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
+                      <input type="number" value="{{ f.aTobDay }}" onChange="{{ onATobDay }}" id="f2-aTobDay" placeholder="например, 10" class="dc-input" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
                     </div>
                   </sc-if>
                   <sc-if value="{{ aTobEx }}" hint-placeholder-val="{{ false }}">
@@ -5616,29 +5642,29 @@ input::placeholder,textarea::placeholder{color:var(--c-ink-3)}
                 <div class="dc-grid3">
                   <div>
                     <div class="dc-lbl">Ребёнок от какой по счёту беременности</div>
-                    <input type="number" value="{{ f.cPregNum }}" onChange="{{ onCPregNum }}" id="f2-cPregNum" placeholder="1" class="dc-input" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
+                    <input type="number" value="{{ f.cPregNum }}" onChange="{{ onCPregNum }}" id="f2-cPregNum" placeholder="например, 1" class="dc-input" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
                   </div>
                   <div>
                     <div class="dc-lbl">От каких по счёту родов</div>
-                    <input type="number" value="{{ f.cBirthNum }}" onChange="{{ onCBirthNum }}" id="f2-cBirthNum" placeholder="1" class="dc-input" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
+                    <input type="number" value="{{ f.cBirthNum }}" onChange="{{ onCBirthNum }}" id="f2-cBirthNum" placeholder="например, 1" class="dc-input" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
                   </div>
                   <div>
                     <div class="dc-lbl">Неделя гестации при родах</div>
-                    <input type="number" value="{{ f.cGest }}" onChange="{{ onCGest }}" id="f2-cGest" placeholder="40" class="dc-input" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
+                    <input type="number" value="{{ f.cGest }}" onChange="{{ onCGest }}" id="f2-cGest" placeholder="например, 40" class="dc-input" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
                   </div>
                   <div>
                     <div class="dc-lbl">Рост при рождении (см)</div>
-                    <input type="number" value="{{ f.cBHeight }}" onChange="{{ onCBHeight }}" id="f2-cBHeight" placeholder="52" class="dc-input" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
+                    <input type="number" value="{{ f.cBHeight }}" onChange="{{ onCBHeight }}" id="f2-cBHeight" placeholder="например, 52" class="dc-input" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
                   </div>
                   <div>
                     <div class="dc-lbl">Масса при рождении (г)</div>
-                    <input type="number" value="{{ f.cBWeight }}" onChange="{{ onCBWeight }}" id="f2-cBWeight" placeholder="3200" class="dc-input" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
+                    <input type="number" value="{{ f.cBWeight }}" onChange="{{ onCBWeight }}" id="f2-cBWeight" placeholder="например, 3200" class="dc-input" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
                   </div>
                   <div>
                     <div class="dc-lbl">Апгар 1 / 5 минута</div>
                     <div style="display:flex;gap:8px">
-                      <input type="number" value="{{ f.cApg1 }}" onChange="{{ onCApg1 }}" id="f2-cApg1" placeholder="8" style="box-sizing:border-box;width:50%;height:36px;padding:0 12px;border:1.5px solid var(--c-border-field);border-radius:8px;background:var(--c-white);font:500 14px/20px 'Manrope',sans-serif;color:var(--c-ink);outline:none" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
-                      <input type="number" value="{{ f.cApg5 }}" onChange="{{ onCApg5 }}" id="f2-cApg5" placeholder="9" style="box-sizing:border-box;width:50%;height:36px;padding:0 12px;border:1.5px solid var(--c-border-field);border-radius:8px;background:var(--c-white);font:500 14px/20px 'Manrope',sans-serif;color:var(--c-ink);outline:none" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
+                      <input type="number" value="{{ f.cApg1 }}" onChange="{{ onCApg1 }}" id="f2-cApg1" placeholder="например, 8" style="box-sizing:border-box;width:50%;height:36px;padding:0 12px;border:1.5px solid var(--c-border-field);border-radius:8px;background:var(--c-white);font:500 14px/20px 'Manrope',sans-serif;color:var(--c-ink);outline:none" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
+                      <input type="number" value="{{ f.cApg5 }}" onChange="{{ onCApg5 }}" id="f2-cApg5" placeholder="например, 9" style="box-sizing:border-box;width:50%;height:36px;padding:0 12px;border:1.5px solid var(--c-border-field);border-radius:8px;background:var(--c-white);font:500 14px/20px 'Manrope',sans-serif;color:var(--c-ink);outline:none" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
                     </div>
                   </div>
                 </div>
@@ -5768,7 +5794,7 @@ input::placeholder,textarea::placeholder{color:var(--c-ink-3)}
                 <div style="display:grid;grid-template-columns:1fr 2fr;gap:12px 32px">
                   <div>
                     <div class="dc-lbl">Возраст первого прикорма (мес)</div>
-                    <input type="number" value="{{ f.cComplMonth }}" onChange="{{ onCComplMonth }}" id="f2-cComplMonth" placeholder="6" class="dc-input" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
+                    <input type="number" value="{{ f.cComplMonth }}" onChange="{{ onCComplMonth }}" id="f2-cComplMonth" placeholder="например, 6" class="dc-input" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
                   </div>
                   <div>
                     <div class="dc-lbl">С чего начинали</div>
@@ -5790,7 +5816,7 @@ input::placeholder,textarea::placeholder{color:var(--c-ink-3)}
                       <sc-if value="{{ cOrviHospYes }}" hint-placeholder-val="{{ false }}">
                         <div style="margin-top:12px;max-width:220px">
                           <div class="dc-lbl">Количество госпитализаций</div>
-                          <input type="number" value="{{ f.cOrviHospN }}" onChange="{{ onCOrviHospN }}" id="f2-cOrviHospN" placeholder="1" class="dc-input" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
+                          <input type="number" value="{{ f.cOrviHospN }}" onChange="{{ onCOrviHospN }}" id="f2-cOrviHospN" placeholder="например, 1" class="dc-input" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
                         </div>
                       </sc-if>
                     </div>
@@ -5809,7 +5835,7 @@ input::placeholder,textarea::placeholder{color:var(--c-ink-3)}
                       <sc-if value="{{ cAllBronchOn }}" hint-placeholder-val="{{ false }}">
                         <div class="dc-maxw260">
                           <div class="dc-lbl">Количество эпизодов бронхообструкции</div>
-                          <input type="number" value="{{ f.cAllBronchN }}" onChange="{{ onCAllBronchN }}" id="f2-cAllBronchN" placeholder="1" class="dc-input" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
+                          <input type="number" value="{{ f.cAllBronchN }}" onChange="{{ onCAllBronchN }}" id="f2-cAllBronchN" placeholder="например, 1" class="dc-input" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
                         </div>
                       </sc-if>
                       <sc-if value="{{ cAllAnaOn }}" hint-placeholder-val="{{ false }}">
@@ -5820,7 +5846,7 @@ input::placeholder,textarea::placeholder{color:var(--c-ink-3)}
                       </sc-if>
                       <div class="dc-maxw260">
                         <div class="dc-lbl">Возраст первого проявления (мес)</div>
-                        <input type="number" value="{{ f.cAllAgeFirst }}" onChange="{{ onCAllAgeFirst }}" id="f2-cAllAgeFirst" placeholder="6" class="dc-input" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
+                        <input type="number" value="{{ f.cAllAgeFirst }}" onChange="{{ onCAllAgeFirst }}" id="f2-cAllAgeFirst" placeholder="например, 6" class="dc-input" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
                       </div>
                     </div>
                   </sc-if>
@@ -6208,7 +6234,7 @@ input::placeholder,textarea::placeholder{color:var(--c-ink-3)}
               <div style="display:flex;flex-direction:column;gap:16px;margin-bottom:24px">
                 <sc-for list="{{ reviewSections }}" as="sec" hint-placeholder-count="7">
                   <div data-dc-m="block" style="border:1px solid var(--c-border-plate);border-radius:12px;overflow:hidden">
-                    <div style="font:700 12px/16px 'Manrope',sans-serif;color:var(--c-ink);letter-spacing:0.5px;text-transform:uppercase;padding:12px 16px;background:var(--c-surface-2);border-bottom:1px solid var(--c-border-plate)">{{ sec.title }}</div>
+                    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;background:var(--c-surface-2);border-bottom:1px solid var(--c-border-plate)"><div style="font:700 12px/16px 'Manrope',sans-serif;color:var(--c-ink);letter-spacing:0.5px;text-transform:uppercase">{{ sec.title }}</div><sc-if value="{{ sec.showEdit }}" hint-placeholder-val="{{ true }}"><button type="button" class="dc-review-edit" onClick="{{ sec.onEdit }}" aria-label="{{ sec.editLabel }}">Изменить</button></sc-if></div>
                     <div style="padding:4px 16px">
                       <sc-for list="{{ sec.rows }}" as="row" hint-placeholder-count="3">
                         <div data-dc="review-row" style="display:flex;gap:16px;padding:8px 0;border-bottom:1px solid var(--c-surface-3)">
@@ -6236,7 +6262,7 @@ input::placeholder,textarea::placeholder{color:var(--c-ink-3)}
                 <div data-dc="wizard-actions-main" style="display:flex;align-items:center;justify-content:flex-end;gap:12px;min-width:0">
                   <sc-if value="{{ showErr }}" hint-placeholder-val="{{ false }}">
                 <div style="display:flex;align-items:center;gap:12px">
-                  <div style="color:var(--c-danger);font:600 12px/16px 'Manrope',sans-serif;text-align:right">{{ errText }}</div>
+                  <div role="alert" style="color:var(--c-danger);font:600 12px/16px 'Manrope',sans-serif;text-align:right">{{ errText }}</div>
                   <sc-if value="{{ showNextErr }}" hint-placeholder-val="{{ false }}">
                     <span onClick="{{ onNextError }}" class="dc-btn-jump">{{ nextErrLabel }}</span>
                   </sc-if>
@@ -6479,12 +6505,12 @@ input::placeholder,textarea::placeholder{color:var(--c-ink-3)}
           <div style="background:var(--c-surface-2);border:1px solid var(--c-border-plate);border-radius:12px;padding:16px 16px">
             <div style="font:600 12px/16px 'Manrope',sans-serif;color:var(--c-ink);margin-bottom:12px">Ваши данные (участник — вы)</div>
             <div data-dc="grid-multi" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
-              <input value="{{ whoSelfDraft.last }}" onChange="{{ onWhoSelfLast }}" placeholder="Фамилия" class="dc-input-inline" style="width:100%" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
-              <input value="{{ whoSelfDraft.first }}" onChange="{{ onWhoSelfFirst }}" placeholder="Имя" class="dc-input-inline" style="width:100%" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
+              <input value="{{ whoSelfDraft.last }}" autocomplete="family-name" onChange="{{ onWhoSelfLast }}" placeholder="Фамилия" class="dc-input-inline" style="width:100%" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
+              <input value="{{ whoSelfDraft.first }}" autocomplete="given-name" onChange="{{ onWhoSelfFirst }}" placeholder="Имя" class="dc-input-inline" style="width:100%" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
             </div>
             <div data-dc="grid-multi" style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-              <input value="{{ whoSelfDraft.mid }}" onChange="{{ onWhoSelfMid }}" placeholder="Отчество" class="dc-input-inline" style="width:100%" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
-              <input value="{{ whoSelfDraft.birth }}" onChange="{{ onWhoSelfBirth }}" type="date" class="dc-input-inline" style="width:100%" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
+              <input value="{{ whoSelfDraft.mid }}" autocomplete="additional-name" onChange="{{ onWhoSelfMid }}" placeholder="Отчество" class="dc-input-inline" style="width:100%" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
+              <input value="{{ whoSelfDraft.birth }}" autocomplete="bday" aria-label="Ваша дата рождения" onChange="{{ onWhoSelfBirth }}" type="date" class="dc-input-inline" style="width:100%" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
             </div>
           </div>
         </sc-if>
@@ -6498,9 +6524,9 @@ input::placeholder,textarea::placeholder{color:var(--c-ink-3)}
             </div>
             <div data-dc="grid-multi" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
               <input value="{{ whoKidDraft.mid }}" onChange="{{ onWhoKidMid }}" placeholder="Отчество" class="dc-input-inline" style="width:100%" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
-              <input value="{{ whoKidDraft.birth }}" onChange="{{ onWhoKidBirth }}" type="date" class="dc-input-inline" style="width:100%" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
+              <input value="{{ whoKidDraft.birth }}" aria-label="Дата рождения ребёнка" onChange="{{ onWhoKidBirth }}" type="date" class="dc-input-inline" style="width:100%" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
             </div>
-            <select value="{{ whoKidDraft.relKind }}" onChange="{{ onWhoKidRel }}" style="box-sizing:border-box;height:36px;padding:0 8px;border:1.5px solid var(--c-border-field);border-radius:8px;background:var(--c-white);-webkit-appearance:none;-moz-appearance:none;appearance:none;font:500 14px/20px 'Manrope',sans-serif;color:var(--c-ink);outline:none;cursor:pointer;width:100%" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
+            <select value="{{ whoKidDraft.relKind }}" aria-label="Кем приходится вам ребёнок" onChange="{{ onWhoKidRel }}" style="box-sizing:border-box;height:36px;padding:0 8px;border:1.5px solid var(--c-border-field);border-radius:8px;background:var(--c-white);-webkit-appearance:none;-moz-appearance:none;appearance:none;font:500 14px/20px 'Manrope',sans-serif;color:var(--c-ink);outline:none;cursor:pointer;width:100%" style-focus="border-color:var(--c-action);box-shadow:0 0 0 3px rgba(11, 115, 194,0.25)">
               <option value="">Кем приходится вам —</option>
               <option value="Дочь">Дочь</option>
               <option value="Сын">Сын</option>
@@ -7710,7 +7736,7 @@ class Component extends DCLogic {
       if (f2.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f2.email)) invalid.push('email');
       if (f2.snils && !this.snilsValid(f2.snils)) invalid.push('snils');
       const bad = [...missing, ...invalid.filter((k) => !missing.includes(k))];
-      if (bad.length) { this.set({ errFields: bad, errIdx: 0, review: false, subStep: this.subOf(bad[0]) || s.subStep, err: missing.length ? 'Заполните обязательные поля, отмеченные красным' : 'Проверьте формат телефона и e-mail', scrollKey: bad[0], scrollNonce: (s.scrollNonce || 0) + 1 }); return; }
+      if (bad.length) { this.set({ errFields: bad, errIdx: 0, review: false, subStep: this.subOf(bad[0]) || s.subStep, err: missing.length ? 'Заполните обязательные поля' : 'Проверьте формат телефона и e-mail', scrollKey: bad[0], scrollNonce: (s.scrollNonce || 0) + 1 }); return; }
       if (!(s.docs && s.docs.extract)) { this.set({ subStep: 9, review: false, err: 'Загрузите выписку из истории болезни в подшаге «Документы»' }); return; }
       if (!s.review) { this.set({ review: true, editing: false, errFields: [], err: '' }); return; }
     }
@@ -8086,7 +8112,7 @@ class Component extends DCLogic {
     // ----- Лента уведомлений (из состояния заявки) -----
     const notifFeed = [];
     if (s.finishedId) notifFeed.push({ onOpen: () => this.set({ screen: 'my' }), title: 'Результаты исследования готовы', text: (finStudy ? finStudy.title + '. ' : '') + 'Документы доступны в разделе «Мои исследования».', when: 'сегодня, 09:40', color: 'var(--c-ok-alt)', bg: 'var(--c-ok-tint)' });
-    if (s.submittedId && s.returned) notifFeed.push({ onOpen: () => this.set({ screen: 'wizard' }), title: 'Анкета возвращена на доработку', text: 'Врач оставил замечания — откройте заявку и исправьте отмеченные красным поля.', when: 'сегодня, 09:12', color: 'var(--c-danger)', bg: 'var(--c-danger-tint)' });
+    if (s.submittedId && s.returned) notifFeed.push({ onOpen: () => this.set({ screen: 'wizard' }), title: 'Анкета возвращена на доработку', text: 'Врач оставил замечания — откройте заявку и исправьте поля с замечаниями.', when: 'сегодня, 09:12', color: 'var(--c-danger)', bg: 'var(--c-danger-tint)' });
     if (s.submittedId && s.pending) notifFeed.push({ onOpen: () => this.set({ screen: 'wizard' }), title: 'Шаг отправлен на проверку врачу', text: 'Обычно проверка занимает до одного рабочего дня — мы пришлём уведомление о результате.', when: 'сейчас', color: 'var(--c-action)', bg: 'var(--c-border-tint)' });
     if (s.submittedId && !s.pending && !s.returned && s.step > 1) notifFeed.push({ onOpen: () => this.set({ screen: 'wizard' }), title: 'Шаг подтверждён врачом', text: 'Можно переходить к следующему шагу заявки.', when: 'сегодня, 08:15', color: 'var(--c-action)', bg: 'var(--c-border-tint)' });
     if (s.submittedId || s.finishedId) notifFeed.push({ onOpen: () => this.set({ screen: 'wizard' }), title: 'Заявка создана', text: activeStudy.title, when: '1 июля 2026, 10:24', color: 'var(--c-action-deep)', bg: 'var(--c-action-tint)' });
@@ -8772,14 +8798,17 @@ class Component extends DCLogic {
         const fmt = (v) => (v && String(v).trim() ? v : dash);
         const relLines = rel.filter((r) => r.last || r.first || r.rel).map((r) => [r.last, r.first, r.mid].filter(Boolean).join(' ') + (r.rel ? ' — ' + r.rel : ''));
         return [
-          { title: 'Группа исследования', rows: [['Код участника', fmt(f.kod)], ['Кем являетесь', fmt(f.group)]] },
-          { title: 'Сдача крови', rows: [['Место', fmt(f.place)]] },
-          { title: 'Личные данные', rows: [['ФИО', fmt(f.fio)], ['Дата рождения', fmt(fmtResultDate(f.birth))], ['Пол', fmt(sexTxt)], ['Телефон', fmt(f.phone)], ['Почта', fmt(f.email)], ['СНИЛС', fmt(f.snils)]] },
-          { title: 'Медицинские данные', rows: [['Группа крови', fmt(label[f.blood] || f.blood)], ['Резус-фактор', fmt(f.rh)], ['Рост', f.height ? f.height + ' см' : dash], ['Масса тела', f.weight ? f.weight + ' кг' : dash]] },
-          { title: 'Происхождение', rows: [['Национальность', fmt(f.ethnic)], ['Национальность матери', fmt(f.ethnicM)], ['Национальность отца', fmt(f.ethnicF)], ['Страна рождения', fmt(f.country)], ['Регион проживания', fmt(f.region)]] },
-          { title: 'Наследственность и родственники', rows: [['Наследственные заболевания', fmt(f.hered)], ['Родственники в исследовании', relLines.length ? relLines.join('; ') : 'не указаны']] },
-          { title: 'Инфекционный статус', rows: [['ВИЧ', fmt(f.hiv)], ['Гепатит B', fmt(f.hepB)], ['Гепатит C', fmt(f.hepC)], ['Сифилис', fmt(f.syph)]] },
-        ];
+          { sub: 1, title: 'Группа исследования', rows: [['Код участника', fmt(f.kod)], ['Кем являетесь', fmt(f.group)]] },
+          { sub: 0, title: 'Сдача крови', rows: [['Место', fmt(f.place)]] },
+          { sub: 1, title: 'Личные данные', rows: [['ФИО', fmt(f.fio)], ['Дата рождения', fmt(fmtResultDate(f.birth))], ['Пол', fmt(sexTxt)], ['Телефон', fmt(f.phone)], ['Почта', fmt(f.email)], ['СНИЛС', fmt(f.snils)]] },
+          { sub: 2, title: 'Медицинские данные', rows: [['Группа крови', fmt(label[f.blood] || f.blood)], ['Резус-фактор', fmt(f.rh)], ['Рост', f.height ? f.height + ' см' : dash], ['Масса тела', f.weight ? f.weight + ' кг' : dash]] },
+          { sub: 6, title: 'Происхождение', rows: [['Национальность', fmt(f.ethnic)], ['Национальность матери', fmt(f.ethnicM)], ['Национальность отца', fmt(f.ethnicF)], ['Страна рождения', fmt(f.country)], ['Регион проживания', fmt(f.region)]] },
+          { sub: 6, title: 'Наследственность и родственники', rows: [['Наследственные заболевания', fmt(f.hered)], ['Родственники в исследовании', relLines.length ? relLines.join('; ') : 'не указаны']] },
+          { sub: 7, title: 'Инфекционный статус', rows: [['ВИЧ', fmt(f.hiv)], ['Гепатит B', fmt(f.hepB)], ['Гепатит C', fmt(f.hepC)], ['Сифилис', fmt(f.syph)]] },
+        /* карта участника СД1 видна и на сводке моногенной (showReview2 без условия на исследование) — там правка
+           подшагов СД1 вела бы не туда, поэтому «Изменить» только у СД1 */
+        ].map((sec) => ({ ...sec, showEdit: sec.sub > 0 && s.studyId !== 'ait', editLabel: 'Изменить: ' + sec.title,   /* v49: аудит 6, п. 10 */
+          onEdit: () => this.set({ review: false, editing: true, err: '', subStep: sec.sub }) }));
       })(),
       onEditReview: () => this.set({ review: false, err: '' }),
       p2PctText: pct2 + '%',
@@ -8817,8 +8846,8 @@ class Component extends DCLogic {
       curSubModCount: curSubErrorItems.length,
       showAllModList: wizard && !s.pending && s.step === 2 && !s.review && !curSubHasErrors,
       returnNote: curSubHasErrors
-        ? 'Исправьте отмеченные поля — после правки замечание снимется автоматически. Замечания к другим подшагам — на красных чипах.'
-        : 'Исправьте отмеченные красным поля. После исправления замечание снимается автоматически.',
+        ? 'Исправьте отмеченные поля — после правки замечание снимется автоматически. Замечания к другим подшагам отмечены на их чипах.'
+        : 'Исправьте поля из списка ниже. После исправления замечание снимается автоматически.',
       curSubModItems: curSubErrorItems.map((it) => ({ label: it.label, comment: it.comment, onJump: () => this.set({ subStep: MOD_SUBSTEP[it.key] || curSub, scrollKey: it.key, scrollNonce: (this.state.scrollNonce || 0) + 1 }) })),
       showAllResolved: wizard && !s.pending && s.step === 2 && !s.review && s.returned && Object.keys(MC).length === 0,
       modItems: Object.keys(MC).map((k) => ({ label: (s.studyId === 'ait' ? MONO_MOD_LABELS[k] : MOD_LABELS[k]) || k, comment: MC[k], onJump: () => this.set(s.studyId === 'ait'
@@ -9294,7 +9323,7 @@ class Component extends DCLogic {
           monoProgressStyle: 'height:100%;border-radius:99px;transition:width .35s ease;background:'
             + 'linear-gradient(90deg,var(--c-prog-1),var(--c-prog-2) 60%,var(--c-prog-3));width:'
             + Math.max(Math.round((готово / Math.max(всегоОбяз, 1)) * 100), 3) + '%',
-          monoShowErr: !!s.err, monoErrText: s.err || '',
+          monoShowErr: !!s.err, monoErrText: s.err ? s.err + ((л) => л.length ? ': ' + л.join(', ') : '')(MONO_SECTIONS[сек - 1].fields.filter((fl) => (s.monoErr || []).includes(fl.k)).map((fl) => fl.label)) : '',   /* v49: какие поля раздела */
           monoPrevHidden: сек <= 1,
           monoPrevDisabled: сек <= 1,
           monoPrevStyle: subBtnBase + (сек <= 1
@@ -9309,8 +9338,9 @@ class Component extends DCLogic {
             if (сек < MONO_SECTIONS.length) { this.set({ monoStep: сек + 1, err: '' }); return; }
             this.submit(); },
           onMonoEdit: () => this.set({ review: false, monoStep: 1, err: '' }),
-          monoReview: MONO_SECTIONS.map((x) => ({
-            title: x.title,
+          monoReview: MONO_SECTIONS.map((x, xi) => ({
+            title: x.title, editLabel: 'Изменить: ' + x.title,   /* v49: аудит 6, п. 10 */
+            onEdit: () => this.set({ review: false, err: '', monoStep: xi + 1 }),
             rows: x.fields.map((f) => ({ k: f.label, v: monoVal(f, ans[f.k]) })),
           })),
         };
@@ -9334,9 +9364,19 @@ class Component extends DCLogic {
       subPrevDisabled, subPrevStyle, subNextStyle, subNextLabel,
       showSubErr: wizard && s.step === 2 && !s.pending && !s.review && !!s.err,
       subErrText: s.err || '',
+      /* v49: ссылки сводки ошибок — поля текущего подшага с ошибкой; нажатие ведёт к полю и ставит в него фокус */
+      subErrLinks: (s.errFields || []).filter((k) => REQ_LABELS[k] && this.subOf(k) === curSub).map((k) => ({
+        label: REQ_LABELS[k],
+        onGo: () => { const el = document.getElementById('f2-' + k); if (!el) return; el.scrollIntoView({ block: 'center' });
+          const t = el.matches('input, select, textarea') ? el : el.querySelector('input, select, textarea, [role="button"]'); if (t && t.focus) t.focus({ preventScroll: true }); },
+      })),
+      showSubErrLinks: (s.errFields || []).some((k) => REQ_LABELS[k] && this.subOf(k) === curSub),
       showAgeBlock: wizard && s.step === 2 && !s.pending && !s.review && curSub === 1 && ageOver,
       onSubPrev: () => { if (curSub > 1) goSub(curSub - 1); },
       /* v48: верхняя панель мастера на телефоне (аудит 5, пп. 2–3). Номер шага — показанный, со сдвигом визита. */
+      /* v49: автозаполнение только своих данных (WCAG 1.3.5): у ребёнка браузер подставил бы имя родителя */
+      acName: s.applicantId === 'self' ? 'name' : 'off',
+      acBday: s.applicantId === 'self' ? 'bday' : 'off',
       wizTopTitle: 'Шаг ' + (s.step - сдвигВизита) + ' из ' + (STEPS.length - сдвигВизита) + ' · ' + STEPS[s.step - 1].title,
       wizTopSub: (wizardApplicant ? wizardApplicant.full + ' · ' : '') + study.title,
       wizTopSegs: STEPS.slice(сдвигВизита).map((st, i) => {
@@ -10080,6 +10120,63 @@ class Component extends DCLogic {
      элементы перерисовываются, и атрибут нужно возвращать после каждого
      перерендера. Пропускаем те, внутри которых уже есть свой контрол, — иначе
      получилась бы кнопка внутри кнопки. */
+
+  /* ---------- v49. Доступность для экранного диктора (аудит 6, пп. 1–5) ----------
+     Разметка полей одна на весь файл: подпись .dc-lbl — соседний блок перед полем, без <label for>. Связываем
+     здесь, а не правкой 140 полей: aria-labelledby на подпись, aria-describedby на подсказку .dc-hint.
+     Атрибуты aria-* наблюдатель не слушает (только style), поэтому круга нет. */
+  var a11yN = 0, errShown = false;
+  function aid(el) { if (!el.id) el.id = 'dc-a11y-' + (++a11yN); return el.id; }
+  function hasField(el) { return !!(el.matches('input, select, textarea') || el.querySelector('input, select, textarea')); }
+  function a11y() {
+    var fs = document.querySelectorAll('input:not([type=hidden]), select, textarea');
+    for (var i = 0; i < fs.length; i++) {
+      var f = fs[i];
+      if (f.closest('[data-dc-demo]')) continue;
+      var named = f.getAttribute('aria-label') || f.getAttribute('aria-labelledby') || f.closest('label') ||
+        (f.id && document.querySelector('label[for="' + f.id + '"]'));
+      if (!named) {
+        var lbl = null, n = f;
+        for (var up = 0; up < 2 && n && !lbl; up++) {
+          var p = n.previousElementSibling;
+          while (p && p.classList.contains('dc-hint')) p = p.previousElementSibling;
+          if (p) { if (hasField(p)) break; if (txt(p)) lbl = p; }
+          n = n.parentElement;
+        }
+        if (lbl) f.setAttribute('aria-labelledby', aid(lbl));
+        else if (f.placeholder) f.setAttribute('aria-label', f.placeholder);
+      }
+      var h = f.nextElementSibling;
+      if (h && h.classList.contains('dc-hint') && !f.getAttribute('aria-describedby')) f.setAttribute('aria-describedby', aid(h));
+      /* ошибка поля: рамка var(--c-danger) из вью-модели */
+      var bad = (f.getAttribute('style') || '').indexOf('var(--c-danger)') >= 0;
+      var w = f.parentElement;
+      if (bad) { f.setAttribute('aria-invalid', 'true'); if (w) w.setAttribute('data-dc-invalid', f.value ? 'format' : 'empty'); }
+      else if (f.getAttribute('aria-invalid')) { f.removeAttribute('aria-invalid'); if (w) w.removeAttribute('data-dc-invalid'); }
+    }
+    /* группы вариантов анкеты (id f2-…): ошибка — контур var(--c-danger) */
+    var gs = document.querySelectorAll('[id^="f2-"]:not(input):not(select):not(textarea)');
+    for (var g = 0; g < gs.length; g++) {
+      var bg = (gs[g].getAttribute('style') || '').indexOf('var(--c-danger)') >= 0;
+      if (bg) gs[g].setAttribute('data-dc-invalid', 'choice'); else gs[g].removeAttribute('data-dc-invalid');
+    }
+    /* выбранный вариант, чип, сегмент */
+    var on = document.querySelectorAll('[data-dc-on]');
+    for (var k = 0; k < on.length; k++) on[k].setAttribute('aria-pressed', on[k].getAttribute('data-dc-on') === '1' ? 'true' : 'false');
+    /* названия разделов анкеты и настроек — заголовки второго уровня */
+    var st = document.querySelectorAll('.dc-sectiontitle');
+    for (var m = 0; m < st.length; m++) { st[m].setAttribute('role', 'heading'); st[m].setAttribute('aria-level', '2'); }
+    /* таб-бар: выбранная вкладка */
+    var tabs = document.querySelectorAll('header nav > div');
+    for (var t = 0; t < tabs.length; t++) {
+      if (tabs[t].hasAttribute('data-dc-active')) tabs[t].setAttribute('aria-current', 'page'); else tabs[t].removeAttribute('aria-current');
+    }
+    /* сводка ошибок: фокус при появлении (NHS), не при каждом изменении текста — иначе фокус уходил бы из поля при вводе */
+    var es = document.querySelector('[data-dc="err-summary"]');
+    var vis = !!(es && es.getClientRects().length);
+    if (vis && !errShown) { es.setAttribute('tabindex', '-1'); es.focus(); }
+    errShown = vis;
+  }
   function keyboard() {
     var els = document.querySelectorAll('[data-dc-hover]');
     for (var i = 0; i < els.length; i++) {
@@ -10094,6 +10191,23 @@ class Component extends DCLogic {
       if (el.getAttribute('tabindex') === '0') continue;
       el.setAttribute('tabindex', '0');
       el.setAttribute('role', 'button');
+    }
+    /* v49 (аудит 6, п. 4): пункты таб-бара, «Выйти», разделы моногенной анкеты, «Удалить», «К полю» — нажимаются,
+       но data-dc-hover у них нет, и с клавиатуры и диктором они были недоступны */
+    var more = document.querySelectorAll('header nav > div, .dc-btn-jump, [style*="cursor: pointer"], [style*="cursor:pointer"]');
+    for (var j = 0; j < more.length; j++) {
+      var m = more[j];
+      if (m.closest('[data-dc-demo]') || m.id === 'dc-mod-fab') continue;
+      if (m.matches('button, a, input, select, textarea, label, [role]')) continue;
+      if (m.querySelector('button, a[href], input, select, textarea, [role="button"]')) continue;
+      if (m.parentElement && m.parentElement.closest('button, a, [role="button"]')) continue;
+      if (/^help-card/.test(m.getAttribute('data-dc') || '')) continue;
+      var cs = getComputedStyle(m);
+      if (cs.position === 'fixed' && m.getBoundingClientRect().width > innerWidth * 0.8) continue;   /* подложки окон */
+      if (/^\d+$/.test(txt(m)) && cs.position === 'absolute') continue;
+      if (!txt(m) && !m.querySelector('svg')) continue;
+      m.setAttribute('tabindex', '0');
+      m.setAttribute('role', 'button');
     }
   }
 
@@ -10134,7 +10248,7 @@ class Component extends DCLogic {
     }, ЖДЁМ);
   }, true);
 
-  function apply() { queued = false; dialogs(); login(); page(); primary(); borders(); rail(); dedupe(); keyboard(); }
+  function apply() { queued = false; dialogs(); login(); page(); primary(); borders(); rail(); dedupe(); keyboard(); a11y(); }
   function schedule() { if (!queued) { queued = true; setTimeout(apply, 90); } }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', apply);
   else apply();
